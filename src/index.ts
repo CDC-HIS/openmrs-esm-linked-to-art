@@ -1,6 +1,5 @@
 import { getAsyncLifecycle, defineConfigSchema, getSyncLifecycle } from '@openmrs/esm-framework';
 import { configSchema } from './config-schema';
-//import { createDashboardLink } from '@openmrs/esm-patient-common-lib';
 import { createDashboardLink } from './createDashboardLink.component';
 import { dashboardMeta } from './dashboard.meta';
 import LinkedToART from './linked-to-art/linked-to-art.component';
