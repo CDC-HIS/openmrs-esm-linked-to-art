@@ -36,6 +36,16 @@
       }
     },
     {
+      "name": "patient-history-summary-widget",
+      "component": "patientHistorySummary",
+      "slot": "ethio-summary-dashboard-slot",
+      "online": true,
+      "offline": true,
+      "meta": {
+        "columnSpan": 4
+      }
+    },
+    {
       "name": "ethio-summary-dashboard",
       "component": "ethioSummaryDashboardLink",
       "slot": "patient-chart-dashboard-slot",
