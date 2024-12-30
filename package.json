@@ -3,7 +3,7 @@
   "version": "4.0.7",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
-  "browser": "dist/openmrs-esm-ethio-hiv-app.js",
+  "browser": "dist/openmrs-esm-ethio-summary-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
