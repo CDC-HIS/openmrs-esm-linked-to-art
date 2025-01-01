@@ -5,7 +5,6 @@ import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { showModal, useLayoutType } from '@openmrs/esm-framework';
 import styles from './encounter-action-menu.scss';
 import { type OpenmrsEncounter } from '../types';
-import { transferOutWorkspace } from '../constants';
 import { deleteEncounter } from './encounter.resource';
 
 interface EncounterActionMenuProps {
@@ -19,11 +18,11 @@ export const EncounterActionMenu = ({ encounter, patientUuid, mutateEncounters }
   const isTablet = useLayoutType() === 'tablet';
 
   const launchEditEncounterForm = useCallback(() => {
-    launchPatientWorkspace(transferOutWorkspace, {
-      workspaceTitle: t('editEncounter', 'Edit Encounter'),
-      encounter,
-      formContext: 'editing',
-    });
+    // launchPatientWorkspace(transferOutWorkspace, {
+    //   workspaceTitle: t('editEncounter', 'Edit Encounter'),
+    //   encounter,
+    //   formContext: 'editing',
+    // });
   }, [encounter, t]);
 
   const launchDeleteEncounterDialog = (encounterUuid: string) => {

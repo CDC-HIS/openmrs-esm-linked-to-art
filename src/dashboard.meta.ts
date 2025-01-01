@@ -1,6 +1,5 @@
 export const dashboardMeta = {
-  slot: 'transfer-out-dashboard-slot',
-  columns: 1,
-  path: 'transfer-out',
-  title: 'Transfer Out',
+  name: 'linkedtoart',
+  slot: 'linked-to-art-dashboard-slot',
+  title: 'Linked to ART',
 };

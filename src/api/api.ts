@@ -1,23 +1,5 @@
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
-import { encounterRepresentation } from '../constants';
 
-export function saveEncounter(abortController: AbortController, payload, encounterUuid?: string) {
-  const url = encounterUuid
-    ? `${restBaseUrl}/encounter/${encounterUuid}?v=${encounterRepresentation}`
-    : `${restBaseUrl}/encounter?v=${encounterRepresentation}`;
-
-  return openmrsFetch(url, {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    method: encounterUuid ? 'POST' : 'POST',
-    body: JSON.stringify(payload),
-    signal: abortController.signal,
-  }).catch((err) => {
-    console.error('Error saving encounter:', err);
-    throw err;
-  });
-}
 
 export function fetchLocation() {
   return openmrsFetch(`${restBaseUrl}/location?q=&v=default`);
@@ -44,13 +26,27 @@ export function getPatientEncounters(patientUUID, encounterUUID) {
   });
 }
 
-export function fetchPatientLastEncounter(patientUuid: string, encounterType) {
-  const query = `encounterType=${encounterType}&patient=${patientUuid}`;
-  return openmrsFetch(`${restBaseUrl}/encounter?${query}&v=${encounterRepresentation}`).then(({ data }) => {
-    if (data.results.length) {
-      return data.results[data.results.length - 1];
-    }
+export async function fetchPatientData() {
+  try {
+    const response = await openmrsFetch(`${restBaseUrl}/artlinkedpatients`);
+    const data = await response.json(); // Correctly parse the JSON response
+    console.log('Fetched data:', data); // Log the fetched data
 
-    return null;
-  });
+    const patients = data.results || [];
+
+    return patients.map((detail: any) => ({
+      id: detail.patientId,
+      patientUUID: detail.patientUuid,
+      name: `${detail.givenName} ${detail.middleName || ''} ${detail.familyName}`.trim(),
+      linkedDate: detail.linkedDate,
+      gender: detail.gender,
+      birthDate: detail.birthDate,
+      identifier: detail.identifier,
+      status: 'Active',
+    }));
+    
+  } catch (error) {
+    console.error('Error fetching patient data:', error);
+    return [];
+  }
 }

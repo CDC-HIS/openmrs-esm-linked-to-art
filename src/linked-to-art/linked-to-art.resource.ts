@@ -1,7 +1,6 @@
 import { openmrsFetch, restBaseUrl } from "@openmrs/esm-framework";
 import { type OpenmrsEncounter } from "../types";
 import useSWR from 'swr';
-import { encounterRepresentation } from "../constants";
 
 type UseEncounters = {
     encounters: Array<OpenmrsEncounter>;
@@ -13,10 +12,10 @@ type UseEncounters = {
 
 
 export function useEncounters(patientUuid: string, encounterType): UseEncounters {
-    const encountersUrl = `${restBaseUrl}/encounter?patient=${patientUuid}&encounterType=${encounterType}&v=${encounterRepresentation}`;
+    
   
     const { data, error, isLoading, isValidating, mutate } = useSWR<{ data: { results: Array<OpenmrsEncounter> } }, Error>(
-      patientUuid ? encountersUrl : null,
+      patientUuid ? null : null,
       openmrsFetch,
     );
   
