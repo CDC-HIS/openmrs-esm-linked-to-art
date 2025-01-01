@@ -17,14 +17,6 @@ export const EncounterActionMenu = ({ encounter, patientUuid, mutateEncounters }
   const { t } = useTranslation();
   const isTablet = useLayoutType() === 'tablet';
 
-  const launchEditEncounterForm = useCallback(() => {
-    // launchPatientWorkspace(transferOutWorkspace, {
-    //   workspaceTitle: t('editEncounter', 'Edit Encounter'),
-    //   encounter,
-    //   formContext: 'editing',
-    // });
-  }, [encounter, t]);
-
   const launchDeleteEncounterDialog = (encounterUuid: string) => {
     const abortController = new AbortController(); // Create an AbortController
 
@@ -55,12 +47,7 @@ export const EncounterActionMenu = ({ encounter, patientUuid, mutateEncounters }
         flipped
         align="left"
       >
-        <OverflowMenuItem
-          className={styles.menuItem}
-          id="editEncounter"
-          onClick={launchEditEncounterForm}
-          itemText={t('edit', 'Edit')}
-        />
+        <OverflowMenuItem className={styles.menuItem} id="editEncounter" itemText={t('edit', 'Edit')} />
         <OverflowMenuItem
           className={styles.menuItem}
           id="deleteEncounter"

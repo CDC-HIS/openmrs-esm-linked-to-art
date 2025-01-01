@@ -1,6 +1,5 @@
 import { openmrsFetch, restBaseUrl } from '@openmrs/esm-framework';
 
-
 export function fetchLocation() {
   return openmrsFetch(`${restBaseUrl}/location?q=&v=default`);
 }
@@ -30,7 +29,6 @@ export async function fetchPatientData() {
   try {
     const response = await openmrsFetch(`${restBaseUrl}/artlinkedpatients`);
     const data = await response.json(); // Correctly parse the JSON response
-    console.log('Fetched data:', data); // Log the fetched data
 
     const patients = data.results || [];
 
@@ -42,9 +40,8 @@ export async function fetchPatientData() {
       gender: detail.gender,
       birthDate: detail.birthDate,
       identifier: detail.identifier,
-      status: 'Active',
+      mrn: '--',
     }));
-    
   } catch (error) {
     console.error('Error fetching patient data:', error);
     return [];
