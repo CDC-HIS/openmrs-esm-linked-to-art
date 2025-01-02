@@ -24,7 +24,7 @@ import {
   launchPatientWorkspace,
 } from '@openmrs/esm-patient-common-lib';
 import { useTranslation } from 'react-i18next';
-import styles from './hiv-care-and-treatment.scss';
+import styles from './linked-to-art.scss';
 import { getObsFromEncounter } from '../utils/encounter-utils';
 import { EncounterActionMenu } from '../utils/encounter-action-menu';
 import { fetchPatientData, getPatientInfo } from '../api/api';
@@ -145,80 +145,81 @@ const LinkedToART: React.FC<HivCareAndTreatmentProps> = ({ patientUuid }) => {
 
   // Error handling for loading and error states
   if (isLoading) return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;
-  if (currentRows?.length) {
-    return (
-      <div className={styles.linkedToArtContainer}>
-        {/* <CardHeader title={headerTitle}>
+
+  return (
+    <div className={styles.linkedToArtContainer}>
+      {/* <CardHeader title={headerTitle}>
         <span></span>
         
       </CardHeader> */}
-        <div className={styles.linkedToArtDetailHeaderContainer}>
-          <div className={styles.desktopHeading}>
-            <h4>{t('linkedtoart', 'Linked to ART')}</h4>
-          </div>
-          <div className={styles.backgroundDataFetchingIndicator}>
-            <span></span>
-          </div>
+      <div className={styles.linkedToArtDetailHeaderContainer}>
+        <div className={styles.desktopHeading}>
+          <h4>{t('linkedtoart', 'Linked to ART')}</h4>
         </div>
-        {currentRows.length > 0 ? (
-          <>
-            <DataTable rows={currentRows} headers={tableHeaders} useZebraStyles size={isTablet ? 'lg' : 'sm'}>
-              {({ rows, headers, getHeaderProps, getTableProps }) => (
-                <TableContainer className={styles.tableContainer}>
-                  <Table className={styles.linkedToArtTable} {...getTableProps()}>
-                    <TableHead>
-                      <TableRow>
-                        {headers.map((header) => (
-                          <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
-                        ))}
-                      </TableRow>
-                    </TableHead>
-                    <TableBody>
-                      {rows.map((row, index) => {
-                        // Find the corresponding patient data using the row ID
-                        const currentPatient = patientData.find((patient) => patient.id === row.id);
+        <div className={styles.backgroundDataFetchingIndicator}>
+          <span></span>
+        </div>
+      </div>
+      {currentRows.length > 0 ? (
+        <>
+          <DataTable rows={currentRows} headers={tableHeaders} useZebraStyles size={isTablet ? 'lg' : 'sm'}>
+            {({ rows, headers, getHeaderProps, getTableProps }) => (
+              <TableContainer className={styles.tableContainer}>
+                <Table className={styles.linkedToArtTable} {...getTableProps()}>
+                  <TableHead>
+                    <TableRow>
+                      {headers.map((header) => (
+                        <TableHeader {...getHeaderProps({ header })}>{header.header}</TableHeader>
+                      ))}
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    {rows.map((row, index) => {
+                      // Find the corresponding patient data using the row ID
+                      const currentPatient = patientData.find((patient) => patient.id === row.id);
 
-                        if (!currentPatient) {
-                          return null; // Skip rendering this row if no matching patient data is found
-                        }
+                      if (!currentPatient) {
+                        return null; // Skip rendering this row if no matching patient data is found
+                      }
 
-                        // Ensure the correct property name for UUID
-                        const patientUuid = currentPatient.patientUUID; // Adjust if `uuid` is named differently in your data
+                      // Ensure the correct property name for UUID
+                      const patientUuid = currentPatient.patientUUID; // Adjust if `uuid` is named differently in your data
 
-                        // Construct the patient chart URL
-                        const patientChartUrl = '${openmrsSpaBase}/patient/${patientUuid}/chart/Patient%20Summary';
+                      // Construct the patient chart URL
+                      const patientChartUrl = '${openmrsSpaBase}/patient/${patientUuid}/chart/Patient%20Summary';
 
-                        //const patientChartUrl = `${openmrsSpaBase}/patient/${currentPatient.uuid}/chart/Patient%20Summary`;
+                      //const patientChartUrl = `${openmrsSpaBase}/patient/${currentPatient.uuid}/chart/Patient%20Summary`;
 
-                        return (
-                          <React.Fragment key={`patient-row-${index}`}>
-                            <TableRow
-                              {...getTableProps({ row })}
-                              data-testid={`patientRow${currentPatient.patientUUID || 'unknown'}`}
-                            >
-                              {row.cells.map((cell) => (
-                                <TableCell key={`patient-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
-                                  {cell.info.header === 'name' && currentPatient.patientUUID ? (
-                                    <ConfigurableLink
-                                      to={patientChartUrl}
-                                      templateParams={{ patientUuid: currentPatient.patientUUID }}
-                                    >
-                                      {cell.value}
-                                    </ConfigurableLink>
-                                  ) : (
-                                    cell.value
-                                  )}
-                                </TableCell>
-                              ))}
-                            </TableRow>
-                          </React.Fragment>
-                        );
-                      })}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-              )}
-            </DataTable>
+                      return (
+                        <React.Fragment key={`patient-row-${index}`}>
+                          <TableRow
+                            {...getTableProps({ row })}
+                            data-testid={`patientRow${currentPatient.patientUUID || 'unknown'}`}
+                          >
+                            {row.cells.map((cell) => (
+                              <TableCell key={`patient-row-${index}-cell-${cell.id}`} data-testid={cell.id}>
+                                {cell.info.header === 'name' && currentPatient.patientUUID ? (
+                                  <ConfigurableLink
+                                    to={patientChartUrl}
+                                    templateParams={{ patientUuid: currentPatient.patientUUID }}
+                                  >
+                                    {cell.value}
+                                  </ConfigurableLink>
+                                ) : (
+                                  cell.value
+                                )}
+                              </TableCell>
+                            ))}
+                          </TableRow>
+                        </React.Fragment>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </TableContainer>
+            )}
+          </DataTable>
+          {totalRows > rowsPerPage && (
             <Pagination
               backwardText={t('previousPage', 'Previous page')}
               forwardText={t('nextPage', 'Next page')}
@@ -236,20 +237,17 @@ const LinkedToART: React.FC<HivCareAndTreatmentProps> = ({ patientUuid }) => {
                 }
               }}
             />
-          </>
-        ) : (
-          <div></div>
-        )}
-      </div>
-    );
-  }
-  return (
-    <Layer>
-      <Tile className={styles.tile}>
-        <EmptyDataIllustration />
-        <p className={styles.content}>{t('noLinkedToArt', 'There are no linked to ART patients to display')}</p>
-      </Tile>
-    </Layer>
+          )}
+        </>
+      ) : (
+        <Layer>
+          <Tile className={styles.tile}>
+            <EmptyDataIllustration />
+            <p className={styles.content}>{t('noLinkedToArt', 'There are no linked to ART patients to display')}</p>
+          </Tile>
+        </Layer>
+      )}
+    </div>
   );
 };
 
