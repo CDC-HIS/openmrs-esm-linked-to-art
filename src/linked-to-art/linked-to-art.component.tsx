@@ -54,6 +54,10 @@ const LinkedToART: React.FC<HivCareAndTreatmentProps> = ({ patientUuid }) => {
   const [patientData, setPatientData] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  const [pageSize, setPageSize] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
   useEffect(() => {
     const getPatientData = async () => {
       try {
@@ -104,13 +108,32 @@ const LinkedToART: React.FC<HivCareAndTreatmentProps> = ({ patientUuid }) => {
     }));
   }, [patientData]);
 
+  const pageSizes = useMemo(() => {
+    const numberOfPages = Math.ceil(tableRows?.length / 100);
+    return [...Array(numberOfPages).keys()].map((x) => {
+      return (x + 1) * 100;
+    });
+  }, [tableRows]);
+
   // Pagination state
-  const [currentPage, setCurrentPage] = React.useState(1);
-  const rowsPerPage = 10;
   const totalRows = tableRows.length;
   const indexOfLastRow = currentPage * rowsPerPage;
   const indexOfFirstRow = indexOfLastRow - rowsPerPage;
-  const currentRows = tableRows.slice(indexOfFirstRow, indexOfLastRow);
+
+  const currentRows = useMemo(
+    () => tableRows.slice(indexOfFirstRow, indexOfLastRow),
+    [indexOfFirstRow, indexOfLastRow, tableRows],
+  );
+
+  const handlePageSizeChange = (newPageSize: number) => {
+    setRowsPerPage(newPageSize);
+    setCurrentPage(1); // Reset to the first page when the page size changes
+  };
+
+  // Function to handle page change
+  const handlePageChange = (newPage: number) => {
+    setCurrentPage(newPage);
+  };
 
   // Error handling for loading and error states
   if (isLoading) return <DataTableSkeleton role="progressbar" compact={isDesktop} zebra />;
@@ -188,6 +211,23 @@ const LinkedToART: React.FC<HivCareAndTreatmentProps> = ({ patientUuid }) => {
               </TableContainer>
             )}
           </DataTable>
+          <Pagination
+            backwardText={t('previousPage', 'Previous page')}
+            forwardText={t('nextPage', 'Next page')}
+            itemsPerPageText={t('itemsPerPage', 'Items per page')}
+            page={currentPage}
+            pageSize={100}
+            pageSizes={[10, 20, 30, 40, 50]}
+            totalItems={totalRows}
+            onChange={(event) => {
+              if (event.pageSize !== rowsPerPage) {
+                handlePageSizeChange(event.pageSize);
+              }
+              if (event.page !== currentPage) {
+                handlePageChange(event.page);
+              }
+            }}
+          />
         </>
       ) : (
         <div></div>
