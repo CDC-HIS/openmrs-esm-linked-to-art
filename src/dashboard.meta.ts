@@ -1,5 +1,5 @@
 export const dashboardMeta = {
-  name: 'linkedtoart',
+  name: 'linked-to-art',
   slot: 'linked-to-art-dashboard-slot',
   title: 'Linked to ART',
 };
