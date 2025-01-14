@@ -1,9 +1,9 @@
 {
   "name": "@icap-ethiopia/esm-linked-to-art-app",
-  "version": "4.0.3",
+  "version": "4.0.4",
   "license": "MPL-2.0",
   "description": "An OpenMRS seed application for building microfrontends",
-  "browser": "dist/openmrs-esm-ethio-hiv-app.js",
+  "browser": "dist/openmrs-esm-linked-to-art-app.js",
   "main": "src/index.ts",
   "source": true,
   "scripts": {
