@@ -47,3 +47,47 @@ export async function fetchPatientData() {
     return [];
   }
 }
+
+export const fetchVisitTypes = async () => {
+  try {
+    const response = await openmrsFetch(`${restBaseUrl}/visittype`);
+    return response.data.results.map((item: { display: string; uuid: string }) => ({
+      display: item.display,
+      uuid: item.uuid,
+    }));
+  } catch (error) {
+    console.error('Error fetching visit types:', error);
+    throw error;
+  }
+};
+
+export function savePatientLinkage(abortController: AbortController, payload: any) {
+  // Construct the URL based on whether a UUID is provided
+  const url = `${restBaseUrl}/bahmnilinkedpatient`;
+
+  // Make the API request
+  return openmrsFetch(url, {
+    headers: {
+      'Content-Type': 'application/json', // Set the appropriate Content-Type
+    },
+    method: 'POST', // Use PUT for updates and POST for creation
+    body: JSON.stringify(payload), // Convert the payload to a JSON string
+    signal: abortController.signal, // Handle abort signal
+  })
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error(`Failed to save VL Test Request Result: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .catch((err) => {
+      console.error('Error saving VL Test Request Result:', err);
+      throw err;
+    });
+}
+
+export function fetchIdentifiers(patientUUID) {
+  return openmrsFetch(`${restBaseUrl}/patient/${patientUUID}/identifier`).then(({ data }) => {
+    return data.results;
+  });
+}

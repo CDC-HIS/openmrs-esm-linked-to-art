@@ -21,9 +21,24 @@
       }
     },
     {
+      "name": "link-patient",
+      "slot": "patient-actions-slot",
+      "component": "linkPatient",
+      "online": true,
+      "offline": true
+    },
+    {
       "component": "root",
       "name": "linked-to-art-dashboard",
       "slot": "linked-to-art-dashboard-slot"
+    }
+  ],
+  "workspaces": [
+    {
+      "name": "link-patient-workspace-form",
+      "component": "markPatientDeceasedForm",
+      "title": "Link Patient",
+      "type": "form"
     }
   ]
 }

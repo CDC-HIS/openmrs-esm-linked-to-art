@@ -4,6 +4,7 @@ import { configSchema } from './config-schema';
 import { createDashboardLink } from './createDashboardLink.component';
 import { dashboardMeta } from './dashboard.meta';
 import LinkedToART from './linked-to-art/linked-to-art.component';
+import linkPatientComponent from './actions-buttons/link-patient.component';
 
 const moduleName = '@openmrs/esm-linked-to-art-app';
 
@@ -33,4 +34,14 @@ export const linkedtoart = getSyncLifecycle(LinkedToART, options);
 export const encounterDeleteConfirmationDialog = getAsyncLifecycle(() => import('./utils/Delete-Encounter.modal'), {
   featureName: 'encounters',
   moduleName: '@openmrs/esm-patient-encounters-app',
+});
+
+export const linkPatient = getSyncLifecycle(linkPatientComponent, {
+  featureName: 'link-patient',
+  moduleName,
+});
+
+export const markPatientDeceasedForm = getAsyncLifecycle(() => import('./Linkage/link-patient-form.workspace'), {
+  featureName: 'mark-patient-deceased-form',
+  moduleName,
 });
