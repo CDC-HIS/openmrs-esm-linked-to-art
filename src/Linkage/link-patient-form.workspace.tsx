@@ -21,11 +21,11 @@ import { Dropdown } from '@carbon/react';
 import { TextArea } from '@carbon/react';
 import { ComboBox } from '@carbon/react';
 import isEmpty from 'lodash/isEmpty';
-import { fetchVisitTypes, savePatientLinkage } from '../api/api';
+import { fetchPatientLinkage, fetchVisitTypes, savePatientLinkage } from '../api/api';
 import dayjs from 'dayjs';
 import { InlineNotification } from '@carbon/react';
 
-type FormInputs = Record<'uuid' | 'display' | 'linkageDate' | 'note', string>;
+type FormInputs = Record<'uuid' | 'display' | 'linkageDate' | 'note' | 'selectedItem', string>;
 
 const LinkPatientForm: React.FC<DefaultPatientWorkspaceProps> = ({ patientUuid }) => {
   const { t } = useTranslation();
@@ -95,7 +95,11 @@ const LinkPatientForm: React.FC<DefaultPatientWorkspaceProps> = ({ patientUuid }
 
     const linkPatientPayload = {
       patientUuid,
-      visitType: fieldValues.display,
+      // visitType: fieldValues.display,
+      visitType: {
+        display: fieldValues.display, // The display name (e.g., 'Tb Clinic')
+        uuid: fieldValues?.selectedItem, // The uuid (e.g., '08fb6e49-3957-44e8-93ab-6e96a544e760')
+      },
       dateLinked: fieldValues.linkageDate,
       note: `ART clinic: ${fieldValues.note}`,
     };
@@ -103,6 +107,21 @@ const LinkPatientForm: React.FC<DefaultPatientWorkspaceProps> = ({ patientUuid }
     const apiPayload = {
       ...linkPatientPayload,
     };
+
+    const existingLinkages = await fetchPatientLinkage(patientUuid);
+
+    // Check if there's a duplicate record
+    const isDuplicate = existingLinkages.some((record) => {
+      const recordDate = dayjs(record.dateLinked.date).format('YYYY-MM-DD');
+      const displayName = fieldValues.display ? fieldValues.display : 'No display selected';
+      return recordDate === linkPatientPayload.dateLinked && record.visitType.display === fieldValues.display;
+    });
+
+    if (isDuplicate) {
+      // Set error message and prevent submission
+      setErrorMessage('This linkage record already exists. Please verify the information.');
+      return;
+    }
 
     try {
       await savePatientLinkage(abortController, apiPayload)
@@ -193,7 +212,17 @@ const LinkPatientForm: React.FC<DefaultPatientWorkspaceProps> = ({ patientUuid }
                     placeholder={t('enterDestination', 'Select a destination')}
                     items={visitTypes}
                     itemToString={(item) => (item ? item.display : '')}
-                    onChange={({ selectedItem }) => field.onChange(selectedItem)}
+                    // onChange={({ selectedItem }) => field.onChange(selectedItem.display)}
+                    onChange={({ selectedItem }) => {
+                      // Only update if selectedItem is not null
+                      if (selectedItem) {
+                        field.onChange(selectedItem.display); // Set the display value in form state
+                        setValue('selectedItem', selectedItem.uuid); // Save the whole selected item (both display and uuid) to form state
+                      } else {
+                        field.onChange(''); // Handle case when ComboBox is cleared
+                        setValue('selectedItem', null); // Set selectedItem to null
+                      }
+                    }}
                     invalid={!!errors.display}
                   />
                 )}

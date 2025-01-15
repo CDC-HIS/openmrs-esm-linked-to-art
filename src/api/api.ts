@@ -91,3 +91,14 @@ export function fetchIdentifiers(patientUUID) {
     return data.results;
   });
 }
+
+export function fetchPatientLinkage(patientUUID: string) {
+  return openmrsFetch(`${restBaseUrl}/bahmnilinkedpatient/${patientUUID}`)
+    .then(({ data }) => {
+      return data; // Return the full array of records
+    })
+    .catch((error) => {
+      console.error('Error fetching patient linkage:', error);
+      throw error;
+    });
+}
