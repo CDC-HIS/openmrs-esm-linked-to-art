@@ -5,6 +5,7 @@
   },
   "extensions": [
     {
+<<<<<<< HEAD
       "name": "linked-to-art-widget",
       "slot": "homepage-widgets-slot",
       "component": "linkedtoart",
@@ -14,6 +15,13 @@
       "name": "linked-to-art-dashboard-link",
       "slot": "homepage-dashboard-slot",
       "component": "linkedToArtDashboardLink",
+=======
+      "name": "ethio-summary-widget",
+      "component": "ethioSummary",
+      "slot": "ethio-summary-dashboard-slot",
+      "online": true,
+      "offline": true,
+>>>>>>> f17df21 (Migration to v6)
       "meta": {
         "name": "linked-to-art",
         "slot": "linked-to-art-dashboard-slot",
