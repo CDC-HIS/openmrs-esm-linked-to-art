@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import {
-  Button,
   DataTable,
   TableContainer,
   Table,
@@ -13,20 +12,11 @@ import {
   Layer,
   Tile,
 } from '@carbon/react';
-import { DataTableSkeleton, InlineLoading } from '@carbon/react';
-import { Add } from '@carbon/react/icons';
-import { ConfigurableLink, formatDate, parseDate, useLayoutType, isDesktop } from '@openmrs/esm-framework';
-import {
-  CardHeader,
-  EmptyDataIllustration,
-  EmptyState,
-  ErrorState,
-  launchPatientWorkspace,
-} from '@openmrs/esm-patient-common-lib';
+import { DataTableSkeleton } from '@carbon/react';
+import { ConfigurableLink, formatDate, parseDate, useLayoutType } from '@openmrs/esm-framework';
+import { EmptyDataIllustration } from '@openmrs/esm-patient-common-lib';
 import { useTranslation } from 'react-i18next';
 import styles from './linked-to-art.scss';
-import { getObsFromEncounter } from '../utils/encounter-utils';
-import { EncounterActionMenu } from '../utils/encounter-action-menu';
 import { fetchPatientData, getPatientInfo } from '../api/api';
 
 interface HivCareAndTreatmentProps {
