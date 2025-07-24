@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { OverflowMenuItem } from '@carbon/react';
-import { launchPatientWorkspace } from '@openmrs/esm-patient-common-lib';
 import { fetchIdentifiers } from '../api/api';
+import { launchWorkspace } from '@openmrs/esm-framework';
 
 const LinkPatient = ({ patientUuid }) => {
   const { t } = useTranslation();
@@ -22,7 +22,7 @@ const LinkPatient = ({ patientUuid }) => {
     checkIdentifiers();
   }, [patientUuid]); // Dependency array ensures this effect runs only when `patientUuid` changes
 
-  const handleLaunchModal = useCallback(() => launchPatientWorkspace('link-patient-workspace-form'), []);
+  const handleLaunchModal = useCallback(() => launchWorkspace('link-patient-workspace-form'), []);
 
   return (
     <OverflowMenuItem

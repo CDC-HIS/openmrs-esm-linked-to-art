@@ -1,13 +1,13 @@
-@use '@carbon/styles/scss/spacing';
-@use '@carbon/styles/scss/type';
-@import '@openmrs/esm-styleguide/src/vars';
+@use '@carbon/layout';
+@use '@carbon/type';
+@use '@openmrs/esm-styleguide/src/vars' as *;
 
 .linkedToArtContainer {
   background-color: $ui-02;
   border: 1px solid $ui-03;
   width: 100%;
   margin: auto;  
-  margin-bottom: spacing.$spacing-05;
+  margin-bottom: layout.$spacing-05;
   max-width: 95vw;
 }
 
@@ -32,7 +32,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: spacing.$spacing-02 0 spacing.$spacing-04 spacing.$spacing-05;
+  padding: layout.$spacing-02 0 layout.$spacing-04 layout.$spacing-05;
   background-color: $ui-02;
 }
 
@@ -48,7 +48,7 @@
     &:after {
       content: '';
       display: block;
-      width: spacing.$spacing-07;
+      width: layout.$spacing-07;
       padding-top: 3px;
       border-bottom: 0.375rem solid;
       @include brand-03(border-bottom-color);
@@ -60,7 +60,7 @@
 html[dir='rtl'] {
   .linkedToArtContainer {
     .linkedToArtDetailHeaderContainer {
-      padding: spacing.$spacing-04 spacing.$spacing-05 spacing.$spacing-04 0;
+      padding: layout.$spacing-04 layout.$spacing-05 layout.$spacing-04 0;
     }
     .desktopHeading,
     .tabletHeading {
@@ -72,7 +72,7 @@ html[dir='rtl'] {
       & :first-child {
         svg {
           left: unset;
-          right: spacing.$spacing-03;
+          right: layout.$spacing-03;
         }
       }
       & :last-child {
@@ -88,7 +88,7 @@ html[dir='rtl'] {
         text-align: right;
         .serviceColor {
           margin-right: 0;
-          margin-left: spacing.$spacing-03;
+          margin-left: layout.$spacing-03;
         }
         button {
           text-align: right;
@@ -117,8 +117,8 @@ html[dir='rtl'] {
 .content {
   @include type.type-style('heading-compact-01');
   color: $text-02;
-  margin-top: spacing.$spacing-05;
-  margin-bottom: spacing.$spacing-03;
+  margin-top: layout.$spacing-05;
+  margin-bottom: layout.$spacing-03;
 }
 
 .tile {
